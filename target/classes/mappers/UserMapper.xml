@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="com.mybatis.dao.UserMapper">
+    <select id="queryUserById" parameterType="int" resultType="com.mybatis.pojo.User">
+        select id,user_name as userName
+        from user
+        where id = ?
+    </select>
+
+
+
+
+</mapper>
