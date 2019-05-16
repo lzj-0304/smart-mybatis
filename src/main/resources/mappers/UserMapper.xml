@@ -7,6 +7,15 @@
     </select>
 
 
+    <select id="queryUserByUserName" parameterType="int" resultType="com.mybatis.pojo.User">
+        select id,user_name as userName
+        from user
+        where user_name = ?
+    </select>
+
+
+
+
 
 
 </mapper>

@@ -49,6 +49,7 @@ public class MySqlSession {
         UserMapper userMapper = new MySqlSession(configuration).getMapper(UserMapper.class);
         System.out.println(userMapper);
         System.out.println(userMapper.queryUserById(46));
+        System.out.println("查询2-->"+userMapper.queryUserByUserName("admin"));
     }
 }
 
