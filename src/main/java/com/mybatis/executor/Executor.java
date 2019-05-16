@@ -4,10 +4,10 @@ public interface Executor {
 
     /**
      * 查询单条记录
-     * @param sql
-     * @param parameter
+     * @param statement
+     * @param parameters
      * @param <T>
      * @return
      */
-    <T> T selectOne(String sql,Object parameter);
+    <T> T selectOne(String statement,Object... parameters);
 }

@@ -5,36 +5,50 @@ import com.mybatis.dao.UserMapper;
 import com.mybatis.executor.Executor;
 import com.mybatis.executor.MyBaseExecutor;
 import com.mybatis.handler.MyHandler;
-
 import java.lang.reflect.Proxy;
 
 public class MySqlSession {
-    private Executor executor = new MyBaseExecutor();
+    private MyConfiguration configuration;
+    private Executor executor;
+
+    public MySqlSession(MyConfiguration configuration) {
+        this.configuration = configuration;
+        executor = new MyBaseExecutor(configuration);
+    }
+
     /**
      * 执行查询
-     * @param sql
-     * @param parameter
+     *
+     * @param statement
+     * @param parameters
      * @param <T>
      * @return
      */
-    public <T> T selectOne(String sql,Object parameter ){
-        return executor.selectOne(sql,parameter);
+    public <T> T selectOne(String statement, Object... parameters) {
+        return executor.selectOne(statement, parameters);
     }
+
+
     /**
      * 获取接口代理类
+     *
      * @param clazz
      * @param <T>
      * @return
      */
-    public  <T> T getMapper(Class clazz){
+
+
+    public <T> T getMapper(Class clazz) {
         return (T) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),
-                new Class[]{clazz},new MyHandler(new MyConfiguration(),this));
+                new Class[]{clazz}, new MyHandler(configuration));
     }
 
 
     public static void main(String[] args) {
-       UserMapper userMapper= new MySqlSession().getMapper(UserMapper.class);
+        MyConfiguration configuration =new MyConfiguration("mybatis.xml");
+        UserMapper userMapper = new MySqlSession(configuration).getMapper(UserMapper.class);
         System.out.println(userMapper);
         System.out.println(userMapper.queryUserById(46));
     }
 }
+

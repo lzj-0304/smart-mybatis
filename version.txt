@@ -1,0 +1,27 @@
+v0.1 版
+简单实现mybatis 基本查询功能
+核心技术点
+    xml解析 + jdk动态代理
+实现方案
+  1.读取全局xml文件获取jdbc 配置 构建连接对象Connection
+  2.读取映射xml文件获取
+      映射文件命名空间(每个映射文件命名空间唯一 配置为接口全路径便于定位接口)
+      statement属性&内容
+         id parameterType resultType sql串
+  3.定义查询类SqlSession 提供
+       查询api方法(selectOne)
+       获取代理类方法(getMapper) 获取代理类实现接口方法调用
+  4.定义sql执行器接口Executor 并提供实现
+       执行sql 获取返回结果 供SqlSession方法使用
+  5.动态代理实现类MyHandler
+       实现Invocation 接口invoke方法，调用SqlSession查询方法实现最终查询
+  6.sql 参数占位问题
+存在问题
+   配置文件、映射文件路径、名称被写死 不方便修改
+   查询操作代码也写死 不方便方法扩展
+   查询仅限单条记录查询
+   更新引入更新操作
+   接口代理局限
+   源代码与框架核心代码依赖度较大 没有分离
+v0.2 版
+

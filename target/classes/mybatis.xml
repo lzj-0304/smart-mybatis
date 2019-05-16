@@ -3,8 +3,8 @@
     <property resource="jdbc.properties"></property>
 
 
-    <!--<mappers>
+    <mappers>
         <mapper resource="mappers/UserMapper.xml"></mapper>
-    </mappers>-->
+    </mappers>
 
 </configuration>
