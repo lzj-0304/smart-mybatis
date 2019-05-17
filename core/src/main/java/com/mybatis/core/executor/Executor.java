@@ -1,4 +1,4 @@
-package com.mybatis.executor;
+package com.mybatis.core.executor;
 
 public interface Executor {
 
@@ -9,5 +9,5 @@ public interface Executor {
      * @param <T>
      * @return
      */
-    <T> T selectOne(String statement,Object... parameters);
+    <T> T selectOne(String statement, Object... parameters);
 }

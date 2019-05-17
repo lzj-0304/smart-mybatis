@@ -1,13 +1,12 @@
 
-package com.mybatis.executor;
+package com.mybatis.core.executor;
 
 
-import com.mybatis.config.MyConfiguration;
-import com.mybatis.model.InterfaceModel;
-import com.mybatis.model.MapperModel;
-import com.mybatis.pojo.User;
-import com.mybatis.utils.DBUtil;
-import com.mybatis.utils.StringUtil;
+import com.mybatis.core.config.MyConfiguration;
+import com.mybatis.core.model.InterfaceModel;
+import com.mybatis.core.model.MapperModel;
+import com.mybatis.core.utils.DBUtil;
+import com.mybatis.core.utils.StringUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -100,12 +99,7 @@ public class MyBaseExecutor implements Executor {
     }
 
 
-    public static void main(String[] args) throws ClassNotFoundException {
-       MyConfiguration configuration =new MyConfiguration("mybatis.xml");
-       Executor executor =new MyBaseExecutor(configuration);
-       User user= executor.selectOne("com.mybatis.dao.UserMapper.queryUserById",46);
-        System.out.println(user);
-    }
+
 
 }
 

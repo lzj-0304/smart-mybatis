@@ -1,4 +1,4 @@
-package com.mybatis.utils;
+package com.mybatis.core.utils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package com.mybatis.utils;
+package com.mybatis.core.utils;
 
 /**
  * 字符串工具类

@@ -1,7 +1,8 @@
-package com.mybatis.config;
+package com.mybatis.core.config;
 
-import com.mybatis.model.InterfaceModel;
-import com.mybatis.model.MapperModel;
+
+import com.mybatis.core.model.InterfaceModel;
+import com.mybatis.core.model.MapperModel;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -21,7 +22,7 @@ import java.util.Properties;
 public class MyConfiguration {
     private ClassLoader classLoader = ClassLoader.getSystemClassLoader();
     private Properties prop;
-    private Map<String,InterfaceModel> mappers = new HashMap<String,InterfaceModel>();
+    private Map<String, InterfaceModel> mappers = new HashMap<String,InterfaceModel>();
     /**
      * 构造对象读取全局配置问价内容
      *    jdbc 配置读取
@@ -115,12 +116,5 @@ public class MyConfiguration {
 
 
 
- /*   public static void main(String[] args) {
-        MyConfiguration configuration =new MyConfiguration("mybatis.xml");
-        configuration.getMappers().forEach((k,v)->{
-            System.out.println("接口路径-->"+k);
-            System.out.println("接口方法配置信息->"+v);
-        });
-    }
-*/
+
 }

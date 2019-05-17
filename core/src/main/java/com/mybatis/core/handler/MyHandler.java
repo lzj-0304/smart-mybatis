@@ -1,9 +1,10 @@
-package com.mybatis.handler;
+package com.mybatis.core.handler;
 
-import com.mybatis.config.MyConfiguration;
-import com.mybatis.model.InterfaceModel;
-import com.mybatis.model.MapperModel;
-import com.mybatis.session.MySqlSession;
+
+import com.mybatis.core.config.MyConfiguration;
+import com.mybatis.core.model.InterfaceModel;
+import com.mybatis.core.model.MapperModel;
+import com.mybatis.core.session.MySqlSession;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

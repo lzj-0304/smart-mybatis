@@ -1,10 +1,11 @@
-package com.mybatis.session;
+package com.mybatis.core.session;
 
-import com.mybatis.config.MyConfiguration;
-import com.mybatis.dao.UserMapper;
-import com.mybatis.executor.Executor;
-import com.mybatis.executor.MyBaseExecutor;
-import com.mybatis.handler.MyHandler;
+
+import com.mybatis.core.config.MyConfiguration;
+import com.mybatis.core.handler.MyHandler;
+import com.mybatis.core.executor.Executor;
+import com.mybatis.core.executor.MyBaseExecutor;
+
 import java.lang.reflect.Proxy;
 
 public class MySqlSession {
@@ -44,12 +45,6 @@ public class MySqlSession {
     }
 
 
-    public static void main(String[] args) {
-        MyConfiguration configuration =new MyConfiguration("mybatis.xml");
-        UserMapper userMapper = new MySqlSession(configuration).getMapper(UserMapper.class);
-        System.out.println(userMapper);
-        System.out.println(userMapper.queryUserById(46));
-        System.out.println("查询2-->"+userMapper.queryUserByUserName("admin"));
-    }
+
 }
 
