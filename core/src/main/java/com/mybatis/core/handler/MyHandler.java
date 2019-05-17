@@ -5,19 +5,14 @@ import com.mybatis.core.config.MyConfiguration;
 import com.mybatis.core.model.InterfaceModel;
 import com.mybatis.core.model.MapperModel;
 import com.mybatis.core.session.MySqlSession;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
 
 public class MyHandler implements InvocationHandler {
-
     private MyConfiguration configuration;
-    private MySqlSession sqlSession;
-
     public MyHandler(MyConfiguration configuration) {
         this.configuration = configuration;
-        sqlSession =new MySqlSession(configuration);
     }
 
     @Override
@@ -32,7 +27,16 @@ public class MyHandler implements InvocationHandler {
                     System.out.println("执行查询操作。。。");
                     String statement = ifm.getInterfaceName()+"."+method.getName();
                     System.out.println("statement-->"+statement);
-                    return sqlSession.selectList(statement,args);
+                    switch (mapperModel.getSqlType()){
+                        case INSERT:
+                        case UPDATE:
+                        case DELETE:
+                            return new MySqlSession(configuration).update(statement,args);
+                        case SELECT:
+                            return new MySqlSession(configuration).selectList(statement,args);
+                        default:
+                            return null;
+                    }
                 }
             }
         }

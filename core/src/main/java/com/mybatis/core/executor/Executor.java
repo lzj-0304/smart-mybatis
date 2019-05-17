@@ -13,6 +13,11 @@ public interface Executor {
      */
     <T> List<T> selectList(String statement, Object... parameters);
 
+    public int update(String statement, Object... parameters);
+
+
+
+
 
 
 

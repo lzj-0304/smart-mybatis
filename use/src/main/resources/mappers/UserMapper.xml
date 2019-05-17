@@ -18,6 +18,10 @@
         from user
     </select>
 
+    <update id="update"  >
+        update user set user_name=? where id=?
+    </update>
+
 
 
 

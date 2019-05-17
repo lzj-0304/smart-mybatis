@@ -21,4 +21,12 @@ public class TestMybatis {
         UserMapper userMapper =session.getMapper(UserMapper.class);
         userMapper.queryUsers().forEach(System.out::println);
     }
+
+    @Test
+    public void test03(){
+        MyConfiguration configuration = new MyConfiguration("mybatis.xml");
+        MySqlSession session = new MySqlSession(configuration);
+        UserMapper userMapper =session.getMapper(UserMapper.class);
+        userMapper.update("abc",46);
+    }
 }

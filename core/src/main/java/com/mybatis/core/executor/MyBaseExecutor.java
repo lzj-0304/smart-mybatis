@@ -10,10 +10,7 @@ import com.mybatis.core.utils.StringUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,21 +22,20 @@ public class MyBaseExecutor implements Executor {
     }
 
 
-
     @Override
     public <T> List<T> selectList(String statement, Object... parameters) {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<T> results =null;
+        List<T> results = null;
         try {
             connection = configuration.getConnection();
             // 获取namespace
-            String namespace = statement.substring(0,statement.lastIndexOf("."));
-            String method = statement.substring(statement.lastIndexOf(".")+1);
+            String namespace = statement.substring(0, statement.lastIndexOf("."));
+            String method = statement.substring(statement.lastIndexOf(".") + 1);
             InterfaceModel ifm = configuration.getInterfaceModel(namespace);
-            for(MapperModel mapperModel:ifm.getMethods()){
-                if(mapperModel.getId().equals(method)){
+            for (MapperModel mapperModel : ifm.getMethods()) {
+                if (mapperModel.getId().equals(method)) {
                     ps = connection.prepareStatement(mapperModel.getSql());
                     if (parameters != null && parameters.length > 0) {
                         for (int i = 0; i < parameters.length; i++) {
@@ -50,19 +46,68 @@ public class MyBaseExecutor implements Executor {
                     // 执行查询
                     rs = ps.executeQuery();
                     //处理结果
-                    results = this.processResult(rs,Class.forName(mapperModel.getResultType()));
+                    results = this.processResult(rs, Class.forName(mapperModel.getResultType()));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DBUtil.close(rs,ps,connection);
+            DBUtil.close(rs, ps, connection);
         }
         return results;
     }
 
     /**
+     * 数据更新
+     * @param statement
+     * @param parameters
+     * @return
+     */
+    @Override
+    public int update(String statement, Object... parameters) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        int row = 0;
+        try {
+            // 得到数据库连接
+            connection = configuration.getConnection();
+            // 设置事务不自动提交
+            connection.setAutoCommit(false);
+            // 获取namespace
+            String namespace = statement.substring(0, statement.lastIndexOf("."));
+            String method = statement.substring(statement.lastIndexOf(".") + 1);
+            InterfaceModel ifm = configuration.getInterfaceModel(namespace);
+            for (MapperModel mapperModel : ifm.getMethods()) {
+                if (mapperModel.getId().equals(method)) {
+                    ps = connection.prepareStatement(mapperModel.getSql());
+                    if (parameters != null && parameters.length > 0) {
+                        for (int i = 0; i < parameters.length; i++) {
+                            // 循环设置参数
+                            ps.setObject(i + 1, parameters[i]);
+                        }
+                    }
+                    // 执行更新
+                    row = ps.executeUpdate();
+                    connection.commit();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 事务回滚
+            try {
+                connection.rollback();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        } finally {
+            DBUtil.close(null, ps, connection);
+        }
+        return row;
+    }
+
+    /**
      * 收集结果
+     *
      * @param rs
      * @param clz
      * @param <T>
@@ -75,7 +120,7 @@ public class MyBaseExecutor implements Executor {
             ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {
                 // 创建一个对象
-               Object result = clz.newInstance();
+                Object result = clz.newInstance();
                 // 给对象设置属性值
                 for (int i = 0; i < rsmd.getColumnCount(); i++) {
                     // 获取属性的名字， 字段的名字（别名）

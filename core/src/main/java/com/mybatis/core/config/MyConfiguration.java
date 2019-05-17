@@ -1,6 +1,8 @@
 package com.mybatis.core.config;
 
 
+import com.mybatis.core.constant.TagType;
+import com.mybatis.core.enums.SqlType;
 import com.mybatis.core.model.InterfaceModel;
 import com.mybatis.core.model.MapperModel;
 import org.dom4j.Document;
@@ -67,6 +69,24 @@ public class MyConfiguration {
                     mapperModel.setParameterType(e.attributeValue("parameterType"));
                     mapperModel.setResultType(e.attributeValue("resultType"));
                     mapperModel.setSql(e.getText().trim());
+                    // 判断标签类型 设置sql类型
+                    switch (e.getName()){
+                        case TagType.INSERT:
+                            mapperModel.setSqlType(SqlType.INSERT);
+                            break;
+                        case TagType.SELECT:
+                            mapperModel.setSqlType(SqlType.SELECT);
+                            break;
+                        case TagType.UPDATE:
+                            mapperModel.setSqlType(SqlType.UPDATE);
+                            break;
+                        case TagType.DELETE:
+                            mapperModel.setSqlType(SqlType.DELETE);
+                            break;
+                        default:
+                            mapperModel.setSqlType(SqlType.UNKNOWN);
+                            break;
+                    }
                     ifm.getMethods().add(mapperModel);
                 });
                 // 将每个映射文件对应InterfaceModel 存入map

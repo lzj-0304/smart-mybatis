@@ -31,6 +31,10 @@ public class MySqlSession {
         return executor.selectList(statement, parameters);
     }
 
+    public int update(String statement, Object... parameters) {
+        return executor.update(statement, parameters);
+    }
+
 
     /**
      * 获取接口代理类

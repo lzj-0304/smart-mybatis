@@ -10,4 +10,7 @@ public interface UserMapper {
     public User queryUserByUserName(String userName);
 
     public List<User> queryUsers();
+
+
+    public int update(String userName,int id);
 }
