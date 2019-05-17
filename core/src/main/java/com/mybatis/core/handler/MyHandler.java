@@ -32,7 +32,7 @@ public class MyHandler implements InvocationHandler {
                     System.out.println("执行查询操作。。。");
                     String statement = ifm.getInterfaceName()+"."+method.getName();
                     System.out.println("statement-->"+statement);
-                    return sqlSession.selectOne(statement,args);
+                    return sqlSession.selectList(statement,args);
                 }
             }
         }

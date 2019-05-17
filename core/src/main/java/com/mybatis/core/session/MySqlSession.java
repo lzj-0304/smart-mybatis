@@ -2,11 +2,12 @@ package com.mybatis.core.session;
 
 
 import com.mybatis.core.config.MyConfiguration;
-import com.mybatis.core.handler.MyHandler;
 import com.mybatis.core.executor.Executor;
 import com.mybatis.core.executor.MyBaseExecutor;
+import com.mybatis.core.handler.MyHandler;
 
 import java.lang.reflect.Proxy;
+import java.util.List;
 
 public class MySqlSession {
     private MyConfiguration configuration;
@@ -17,16 +18,17 @@ public class MySqlSession {
         executor = new MyBaseExecutor(configuration);
     }
 
+
+
     /**
      * 执行查询
      *
      * @param statement
      * @param parameters
-     * @param <T>
      * @return
      */
-    public <T> T selectOne(String statement, Object... parameters) {
-        return executor.selectOne(statement, parameters);
+    public <T> List<T> selectList(String statement, Object... parameters) {
+        return executor.selectList(statement, parameters);
     }
 
 

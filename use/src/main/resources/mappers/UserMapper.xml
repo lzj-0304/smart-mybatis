@@ -13,6 +13,11 @@
         where user_name = ?
     </select>
 
+    <select id="queryUsers"  resultType="com.mybatis.pojo.User">
+        select id,user_name as userName
+        from user
+    </select>
+
 
 
 

@@ -1,13 +1,19 @@
 package com.mybatis.core.executor;
 
+import java.util.List;
+
 public interface Executor {
 
     /**
-     * 查询单条记录
+     * 查询List 数据
      * @param statement
      * @param parameters
      * @param <T>
      * @return
      */
-    <T> T selectOne(String statement, Object... parameters);
+    <T> List<T> selectList(String statement, Object... parameters);
+
+
+
+
 }

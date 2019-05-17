@@ -14,6 +14,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyBaseExecutor implements Executor {
     private MyConfiguration configuration;
@@ -22,19 +24,14 @@ public class MyBaseExecutor implements Executor {
         this.configuration = configuration;
     }
 
-    /**
-     *
-     * @param statement   namespace+id
-     * @param parameters
-     * @param <T>
-     * @return
-     */
+
+
     @Override
-    public <T> T selectOne(String statement, Object... parameters) {
+    public <T> List<T> selectList(String statement, Object... parameters) {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Object result =null;
+        List<T> results =null;
         try {
             connection = configuration.getConnection();
             // 获取namespace
@@ -53,7 +50,7 @@ public class MyBaseExecutor implements Executor {
                     // 执行查询
                     rs = ps.executeQuery();
                     //处理结果
-                    result = this.processResult(rs,Class.forName(mapperModel.getResultType()));
+                    results = this.processResult(rs,Class.forName(mapperModel.getResultType()));
                 }
             }
         } catch (Exception e) {
@@ -61,7 +58,7 @@ public class MyBaseExecutor implements Executor {
         } finally {
             DBUtil.close(rs,ps,connection);
         }
-        return (T) result;
+        return results;
     }
 
     /**
@@ -71,14 +68,14 @@ public class MyBaseExecutor implements Executor {
      * @param <T>
      * @return
      */
-    private <T> T processResult(ResultSet rs, Class<?> clz) {
-        Object result = null;
+    private <T> List<T> processResult(ResultSet rs, Class<?> clz) {
+        List results = new ArrayList();
         try {
             // 元结果集 获取字段个数和字段名字 结果的描述
             ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {
                 // 创建一个对象
-                result = clz.newInstance();
+               Object result = clz.newInstance();
                 // 给对象设置属性值
                 for (int i = 0; i < rsmd.getColumnCount(); i++) {
                     // 获取属性的名字， 字段的名字（别名）
@@ -91,15 +88,13 @@ public class MyBaseExecutor implements Executor {
                     // 将method放到newInstance()之后的对象中，并且将列名对应的结果设置到方法中
                     method.invoke(result, rs.getObject(fieldName));
                 }
+                results.add(result);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return (T) result;
+        return results;
     }
-
-
-
 
 }
 
